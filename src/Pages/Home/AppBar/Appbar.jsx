@@ -16,6 +16,7 @@ import TemporaryDrawer from './Drawer';
 import LoginIcon from '@mui/icons-material/Login';
 import { Link, useNavigate } from 'react-router-dom';
 import useAuth from '../../../Hooks/UseSuth';
+import { Typography } from '@mui/material';
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -169,16 +170,10 @@ export default function PrimarySearchAppBar() {
                     <div className='text-white'>
                         <TemporaryDrawer></TemporaryDrawer>
                     </div>
-
-                    <Search>
-                        <SearchIconWrapper>
-                            <SearchIcon />
-                        </SearchIconWrapper>
-                        <StyledInputBase
-                            placeholder="Search…"
-                            inputProps={{ 'aria-label': 'search' }}
-                        />
-                    </Search>
+                    <Typography variant="h6" component="div" sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+                        Protasker
+                    </Typography>
+                   
                     <Box sx={{ flexGrow: 1 }} />
                     <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
                         <IconButton
@@ -186,9 +181,7 @@ export default function PrimarySearchAppBar() {
                             aria-label="show 17 new notifications"
                             color="inherit"
                         >
-                            <Badge badgeContent={17} color="error">
-                                <NotificationsIcon />
-                            </Badge>
+                           
                         </IconButton>
                         {/*  */}
                         {

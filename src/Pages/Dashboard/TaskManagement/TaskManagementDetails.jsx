@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import useAuth from "../../../Hooks/UseSuth";
 import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import swal from "sweetalert";
 
 
 const TaskManagementDetails = () => {
@@ -44,7 +45,7 @@ const TaskManagementDetails = () => {
                 // console.log(result);
                 if (result.acknowledged) {
                     reset();
-                    toast.success('🦄 Wow so easy!', {
+                    toast.success(' Successfully edit', {
                         position: "top-right",
                         autoClose: 5000,
                         hideProgressBar: false,
@@ -52,20 +53,38 @@ const TaskManagementDetails = () => {
                         pauseOnHover: true,
                         draggable: true,
                         progress: undefined,
-                        theme: "dark",
+                        theme: "light",
                     });
+                    navigate('/dashboard/taskManagement')
                 }
             })
     }
     const handleDelete = () => {
-        axiosPublic.delete(`/tasks/${id}`)
-            .then(res => {
-                const result = res.data;
-                if (result.acknowledged) {
-                    reset();
-                    navigate('/dashboard/taskManagement')
+        swal({
+            title: "Are you sure?",
+            text: "You Want To  Delete It",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    axiosPublic.delete(`/tasks/${id}`)
+                        .then(res => {
+                            const result = res.data;
+                            if (result.acknowledged) {
+                                swal("Delete Successfully done  ", {
+                                    icon: "success",
+                                });
+                                reset();
+                                navigate('/dashboard/taskManagement')
+                            }
+                        })
+                } else {
+                    swal("your item is safe ");
                 }
-            })
+            });
+
     }
     return (
         <div className="w-full overflow-x-auto px-1 py-3">
@@ -81,39 +100,53 @@ const TaskManagementDetails = () => {
                 <dialog id={task._id} className="modal">
                     <div className="modal-box w-11/12 max-w-5xl">
                         <p className="py-2 text-3xl font-bold">If You Wat To Update</p>
-                        <div className="flex justify-start gap-4 items-end">
+                        <div className="flex justify-start gap-4 flex-col items-end">
                             <div className="w-full">
                                 <div className=" mt-5 lg:mt-10">
                                     <form onSubmit={handleSubmit(onSubmit)} className="space-y-2 text-black ">
-                                        <div className="flex justify-between items-center gap-4">
-                                            <div className="form-control w-full">
-                                                <label className="label">
-                                                    <span className="label-text">Title</span>
-                                                </label>
-                                                <select {...register("type")} defaultValue={task?.task?.type} className="input focus:border-2 focus:border-black w-full input-bordered select " required>
-                                                    <option value='' >Select</option>
-                                                    <option value="low">Low</option>
-                                                    <option value="moderate">Mid</option>
-                                                    <option value="high">High</option>
-                                                </select>
-                                                {/* <input type="text"  {...register("title", { required: true })} name="title" placeholder="Title" className="input w-full input-bordered" required /> */}
+                                        <div className="flex justify-between  flex-col items-center w-full gap-4">
+                                            <div className="flex flex-col justify-between items-center gap-4 w-full">
+                                                <div className="form-control w-full">
+                                                    <label className="label">
+                                                        <span className="label-text  font-bold ">Type</span>
+                                                    </label>
+                                                    <select {...register("type")} defaultValue={task?.task?.type} className="input focus:border-2 focus:border-black w-full input-bordered select " required>
+                                                        <option value={task?.taskStatus}>{task?.task?.type}</option>
+                                                        <option value="low">Low</option>
+                                                        <option value="moderate">Mid</option>
+                                                        <option value="high">High</option>
+                                                    </select>
+                                                    {/* <input type="text"  {...register("title", { required: true })} name="title" placeholder="Title" className="input w-full input-bordered" required /> */}
+                                                </div>
+                                                <div className="form-control w-full">
+                                                    <label className="label">
+                                                        <span className="label-text font-bold">Task Status</span>
+                                                    </label>
+                                                    <select {...register("status")} name="status" className="input focus:border-2 focus:border-black w-full input-bordered select " required>
+                                                        <option value={task?.taskStatus}>{task?.taskStatus}</option>
+                                                        <option value="todo">todo</option>
+                                                        <option value="ongoing">ongoing</option>
+                                                        <option value="complete">complete</option>
+                                                    </select>
+                                                    {/* <input type="text"  {...register("title", { required: true })} name="title" placeholder="Title" className="input w-full input-bordered" required /> */}
+                                                </div>
                                             </div>
                                             <div className="form-control w-full">
                                                 <label className="label">
-                                                    <span className="label-text">Title</span>
+                                                    <span className="label-text font-bold">Date</span>
                                                 </label>
                                                 <input type="date" onChange={(event) => setSelectedDate(event.target.value)} defaultValue={task?.deadline} name="date" className="input w-full focus:border-2 focus:border-black input-bordered" required />
                                             </div>
                                         </div>
                                         <div className="form-control">
                                             <label className="label">
-                                                <span className="label-text">Title</span>
+                                                <span className="label-text font-bold">Title</span>
                                             </label>
                                             <input type="text" defaultValue={task?.task?.title}  {...register("title", { required: true })} name="title" placeholder="Title" className="input  focus:border-2 focus:border-black input-bordered" required />
                                         </div>
                                         <div className="form-control">
                                             <label className="label">
-                                                <span className="label-text">Description</span>
+                                                <span className="label-text font-bold">Description</span>
                                             </label>
                                             <textarea type="text" {...register("description", {
                                                 required: true,
@@ -125,10 +158,10 @@ const TaskManagementDetails = () => {
                                     </form>
                                 </div>
                             </div>
-                            <div className="modal-action">
+                            <div className="modal-action w-full">
                                 <form method="dialog">
                                     {/* if there is a button, it will close the modal */}
-                                    <button className="btn">Close</button>
+                                    <button className="btn w-full btn-sm text-black hover:text-white bg-white hover:bg-black border-black hover:border-white">Close</button>
                                 </form>
                             </div>
                         </div>

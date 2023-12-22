@@ -1,7 +1,7 @@
 import Extrasection from "../About/Extrasection";
 
 import Baner from "../Banner/Banner";
-import ContactInfo from "../Contact/Contact";
+import ContactInfo from "../Contact/AboutUs";
 import UserTypesComponent from "../UserAre/UserAre";
 
 
