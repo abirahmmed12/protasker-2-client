@@ -60,7 +60,7 @@ export default function TemporaryDrawer() {
             onKeyDown={toggleDrawer(anchor, false)}
         >
             <div className='text-center '>
-                <h1 className='text-2xl font-bold mt-2 py-4 '>Task Management</h1>
+                <h1 className='text-2xl font-bold mt-2 py-4 '>ProTasker</h1>
             </div>
             <Divider />
             <List>
@@ -84,18 +84,7 @@ export default function TemporaryDrawer() {
                 ))}
             </List>
             <Divider />
-            {/* <List>
-                {['All mail', 'Trash', 'Spam'].map((text, index) => (
-                    <ListItem key={text} disablePadding>
-                        <ListItemButton>
-                            <ListItemIcon>
-                                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                            </ListItemIcon>
-                            <ListItemText primary={text} />
-                        </ListItemButton>
-                    </ListItem>
-                ))}
-            </List> */}
+    
         </Box>
     );
 
